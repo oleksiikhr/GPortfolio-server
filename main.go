@@ -18,7 +18,7 @@ func main() {
 	loadHtmlFiles()
 
 	// Routes
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	http.Handle("/static/", http.StripPrefix("/", http.FileServer(http.Dir("dist"))))
 	http.HandleFunc("/", handleMain)
 
 	startServer()
@@ -26,14 +26,14 @@ func main() {
 
 func loadHtmlFiles() {
 	var err error
-	htmlFile, err = ioutil.ReadFile("./public/index.html")
+	htmlFile, err = ioutil.ReadFile("./dist/index.html")
 
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func push(w http.ResponseWriter, resources... string) {
+func push(w http.ResponseWriter, resources ...string) {
 	if pusher, ok := w.(http.Pusher); ok {
 		for _, resource := range resources {
 			_ = pusher.Push(resource, nil)
@@ -42,12 +42,7 @@ func push(w http.ResponseWriter, resources... string) {
 }
 
 func handleMain(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		http.NotFound(w, r)
-		return
-	}
-
-	push(w, "/static/app.js", "/static/style.css")
+	push(w, "/static/main.js", "/static/main.css")
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.Write(htmlFile)
 }
