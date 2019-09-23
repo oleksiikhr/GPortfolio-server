@@ -55,6 +55,23 @@ module.exports = (env, { mode }) => {
           ]
         },
         {
+          test: /\.less$/,
+          use: [
+            MiniCssExtractPlugin.loader,
+            'css-loader',
+            {
+              loader: 'less-loader',
+              options: {
+                modifyVars: {
+                  'primary-color': '#3f3d56',
+                  'link-color': '#3f3d56'
+                },
+                javascriptEnabled: true
+              }
+            }
+          ]
+        },
+        {
           test: /\.(png|svg|jpe?g|gif)$/,
           use: [
             {
