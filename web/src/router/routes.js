@@ -7,8 +7,8 @@ export default [
     component: () => import('@/pages/Home')
   },
   {
-    path: '/test',
-    name: 'test',
-    component: () => import('@/pages/Home')
+    path: '/steps',
+    name: 'steps',
+    component: () => import('@/pages/Steps')
   }
 ]

@@ -20,7 +20,8 @@ module.exports = (env, { mode }) => {
     mode: mode,
     entry: [
       './src/main.js',
-      './src/styles/index.scss'
+      './src/styles/index.scss',
+      'ant-design-vue/dist/antd.less'
     ],
     devtool: isProd ? false : 'source-map',
     output: {
