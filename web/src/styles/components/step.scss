@@ -1,0 +1,31 @@
+@import "../variables";
+
+.component_step {
+  display: flex;
+}
+
+.cs_aside {
+  width: 250px;
+  margin-right: 20px;
+}
+
+.cs_wrap {
+  flex: 1;
+  min-height: 500px;
+  padding: 20px;
+  background: #fff;
+}
+
+.cs_button {
+  margin-top: 20px;
+}
+
+.cs_back_top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 40px;
+  color: $primary;
+}
