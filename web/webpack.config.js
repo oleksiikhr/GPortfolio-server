@@ -19,9 +19,9 @@ module.exports = (env, { mode }) => {
   const config = {
     mode: mode,
     entry: [
+      'ant-design-vue/dist/antd.less',
       './src/main.js',
-      './src/styles/index.scss',
-      'ant-design-vue/dist/antd.less'
+      './src/styles/index.scss'
     ],
     devtool: isProd ? false : 'source-map',
     output: {
@@ -50,10 +50,20 @@ module.exports = (env, { mode }) => {
         {
           test: /\.scss$/,
           use: [
-            isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+            {
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                hmr: !isProd
+              }
+            },
             'css-loader',
             'resolve-url-loader',
-            'sass-loader'
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: true
+              }
+            }
           ]
         },
         {
