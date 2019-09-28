@@ -1,8 +1,6 @@
 <template>
   <div class="page page_generate">
-    <div class="mc tc">
-      <logo-svg class="logo" />
-    </div>
+    <app-logo />
     <div class="mv_laptop_l mc">
       <div class="pg_wrap">
         <main class="pg_main">
@@ -31,11 +29,11 @@ import ChooseTemplate from '@/components/steps/ChooseTemplate'
 import Customize from '@/components/steps/Customize'
 import Preview from '@/components/steps/Preview'
 import Deploy from '@/components/steps/Deploy'
-import LogoSvg from '@/components/svg/Logo'
+import AppLogo from '@/components/Logo'
 
 export default {
   components: {
-    LogoSvg
+    AppLogo
   },
   data() {
     return {

@@ -1,8 +1,6 @@
 <template>
   <div class="page home_page">
-    <div class="mc tc">
-      <logo-svg class="logo" />
-    </div>
+    <app-logo />
     <header class="mw_4k mc hp_header">
       <div class="hp_header__wrap">
         <div class="hp_header_left">
@@ -59,11 +57,11 @@ import { REPOSITORY_GPORTFOLIO } from '../scripts/links'
 import { GENERATE_PAGE } from '../router/routes'
 import HireSvg from '@/components/svg/Hire'
 import WaveSvg from '@/components/svg/Wave'
-import LogoSvg from '@/components/svg/Logo'
+import AppLogo from '@/components/Logo'
 
 export default {
   components: {
-    HireSvg, WaveSvg, LogoSvg
+    AppLogo, HireSvg, WaveSvg
   },
   methods: {
     onClickGithub() {
