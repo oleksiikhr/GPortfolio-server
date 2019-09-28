@@ -1,10 +1,10 @@
 <template>
-  <div class="component_block">
+  <div :class="`component_block cb_level_${level}`">
     <div class="cb_title">
       <a
         :id="id"
         :href="link"
-        class="ant-anchor"
+        class="cb_link"
       >
         # {{ title }}
       </a>
@@ -17,20 +17,29 @@
 
 <script>
 export default {
+  name: 'Block',
   props: {
     title: {
       type: String,
       required: true
     },
+    href: {
+      type: String,
+      default: ''
+    },
     level: { // for Step.vue
-      type: Number,
+      type: [Number, String],
       default: 1,
-      validator: (val) => val > 0
+      validator: (val) => +val > 0 && +val < 4
     }
   },
   computed: {
     id() {
-      return this.title.trim().toLowerCase()
+      if (this.href) {
+        return this.href[0] === '#' ? this.href.substring(1) : this.href
+      }
+
+      return this.href || this.title.trim().toLowerCase().replace(/[^a-z0-9]/g, '-')
     },
     link() {
       return '#' + this.id

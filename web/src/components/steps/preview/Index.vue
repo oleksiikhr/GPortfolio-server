@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Step from '@/components/Step'
+import Step from '@/components/steps/Step'
 
 export default {
   components: {

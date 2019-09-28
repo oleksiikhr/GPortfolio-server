@@ -17,7 +17,7 @@ module.exports = (env, { mode }) => {
   const isProd = mode === 'production'
 
   const config = {
-    mode: mode,
+    mode,
     entry: [
       'ant-design-vue/dist/antd.less',
       './src/main.js',

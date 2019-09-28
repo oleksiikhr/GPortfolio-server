@@ -18,6 +18,11 @@
 
 .cs_wrap_content {
   padding: 20px;
+  > div:first-child {
+    > .component_block:first-child {
+      margin-top: 0;
+    }
+  }
 }
 
 .cs_button {

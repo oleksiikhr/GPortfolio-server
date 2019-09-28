@@ -1,5 +1,5 @@
 <template>
-  <block title="Templates">
+  <div>
     <a-alert
       message="Choose the template you want to use"
       type="info"
@@ -25,15 +25,11 @@
         />
       </a-card>
     </div>
-  </block>
+  </div>
 </template>
 
 <script>
-import Block from '@/components/Block'
-
 export default {
-  components: {
-    Block
-  }
+  //
 }
 </script>

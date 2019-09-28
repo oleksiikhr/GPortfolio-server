@@ -1,6 +1,8 @@
 <template>
   <a-anchor-link
     :children="null"
+    :component="null"
+    :enable="null"
     v-bind="item"
     v-on="item"
   >

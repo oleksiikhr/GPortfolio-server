@@ -30,11 +30,11 @@
 </template>
 
 <script>
-import ChooseTemplate from '@/components/steps/ChooseTemplate'
-import Customize from '@/components/steps/Customize'
-import Preview from '@/components/steps/Preview'
-import Deploy from '@/components/steps/Deploy'
-import AppLogo from '@/components/Logo'
+import ChooseTemplate from '@/components/steps/choose'
+import Customize from '@/components/steps/customize'
+import Preview from '@/components/steps/preview'
+import Deploy from '@/components/steps/deploy'
+import AppLogo from '@/components/global/Logo'
 
 export default {
   components: {
