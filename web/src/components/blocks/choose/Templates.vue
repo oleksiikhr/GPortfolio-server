@@ -14,8 +14,9 @@
         title="Some template"
       >
         <img
-          :src="`https://picsum.photos/id/${i + 250}/200`"
+          :src="`https://picsum.photos/id/${i + 250}/200/200`"
           alt="example"
+          loading="lazy"
           slot="cover"
         />
         <a-badge

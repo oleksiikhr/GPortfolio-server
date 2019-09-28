@@ -53,8 +53,8 @@
 </template>
 
 <script>
-import { REPOSITORY_GPORTFOLIO } from '../scripts/links'
 import { GENERATE_PAGE } from '../router/routes'
+import { ORGANIZATION } from '../scripts/links'
 import HireSvg from '@/components/svg/Hire'
 import WaveSvg from '@/components/svg/Wave'
 import AppLogo from '@/components/Logo'
@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     onClickGithub() {
-      window.open(REPOSITORY_GPORTFOLIO, '_blank')
+      window.open(ORGANIZATION, '_blank')
     },
     onClickTryIt() {
       this.$router.push({ name: GENERATE_PAGE })
