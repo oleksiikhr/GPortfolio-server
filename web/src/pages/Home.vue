@@ -22,26 +22,7 @@
               Github
             </a-button>
           </div>
-          <div class="hp_header_left__contributors">
-            <a
-              v-for="i in 50"
-              :key="i"
-              href="#"
-            >
-              <a-avatar
-                icon="user"
-                alt="TODO"
-              />
-            </a>
-            <a-popover placement="bottom">
-              <template slot="content">
-                <span>Become a Contributor</span>
-              </template>
-              <a href="https://github.com/GPortfolio/GPortfolio" target="_blank">
-                <a-avatar type="primary" style="backgroundColor: #3f3d56" icon="plus" alt />
-              </a>
-            </a-popover>
-          </div>
+          <contributors />
         </div>
         <div class="hp_header_right">
           <hire-svg />
@@ -53,6 +34,7 @@
 </template>
 
 <script>
+import Contributors from '@/components/Contributors'
 import { GENERATE_PAGE } from '@/router/routes'
 import AppLogo from '@/components/global/Logo'
 import { ORGANIZATION } from '@/scripts/links'
@@ -61,7 +43,7 @@ import WaveSvg from '@/components/svg/Wave'
 
 export default {
   components: {
-    AppLogo, HireSvg, WaveSvg
+    AppLogo, HireSvg, WaveSvg, Contributors
   },
   methods: {
     onClickGithub() {
