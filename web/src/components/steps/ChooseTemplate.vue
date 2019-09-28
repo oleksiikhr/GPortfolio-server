@@ -1,26 +1,20 @@
 <template>
   <step :menu="menu">
-    <block title="Storage">
-      <a-alert message="This functionality is in development" type="info" showIcon />
-    </block>
-    <block title="API">
-      <a-icon type="github" />
-      TODO
-    </block>
-    <block title="Templates">
-      <templates-block />
-    </block>
+    <storage-block />
+    <api-block />
+    <templates-block />
   </step>
 </template>
 
 <script>
 import TemplatesBlock from '@/components/blocks/choose/Templates'
-import Block from '@/components/Block'
+import StorageBlock from '@/components/blocks/choose/Storage'
+import ApiBlock from '@/components/blocks/choose/Api'
 import Step from '@/components/Step'
 
 export default {
   components: {
-    Step, Block, TemplatesBlock
+    Step, ApiBlock, TemplatesBlock, StorageBlock
   },
   data() {
     return {

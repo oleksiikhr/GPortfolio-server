@@ -8,7 +8,17 @@
       <slot name="after-sidebar" />
     </aside>
     <div class="cs_wrap">
-      <slot />
+      <div class="cs_wrap_content">
+        <slot />
+      </div>
+      <div class="cs_wrap_navigation">
+        <a-button
+          type="primary"
+          size="large"
+        >
+          Next<a-icon type="right" />
+        </a-button>
+      </div>
     </div>
     <a-back-top class="cs_back_top">
       <a-icon type="up-square" />
