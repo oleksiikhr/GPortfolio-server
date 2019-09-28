@@ -5,7 +5,7 @@
 }
 
 .cs_aside {
-  width: 250px;
+  width: 200px;
   margin-right: 20px;
 }
 
@@ -14,6 +14,7 @@
   min-height: 500px;
   padding: 20px;
   background: #fff;
+  box-shadow: 0 8px 20px rgba(143, 168, 191, 0.35);
 }
 
 .cs_button {
@@ -28,4 +29,17 @@
   height: 40px;
   font-size: 40px;
   color: $primary;
+}
+
+/*
+ * Content
+ */
+.cs_wrap {
+  .title {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+  }
+  * + .title {
+    margin-top: 50px;
+  }
 }

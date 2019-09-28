@@ -17,5 +17,11 @@ export default [
     path: '/generate',
     name: GENERATE_PAGE,
     component: Generate
+  },
+  {
+    path: '*',
+    redirect: {
+      name: HOME_PAGE
+    }
   }
 ]
