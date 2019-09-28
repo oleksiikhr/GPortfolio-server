@@ -50,8 +50,9 @@ module.exports = (env, { mode }) => {
         {
           test: /\.scss$/,
           use: [
-            MiniCssExtractPlugin.loader,
+            isProd ? MiniCssExtractPlugin.loader : 'style-loader',
             'css-loader',
+            'resolve-url-loader',
             'sass-loader'
           ]
         },
