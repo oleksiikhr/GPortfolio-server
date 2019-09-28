@@ -8,12 +8,17 @@
             <a-step
               v-for="(step, index) in steps"
               :key="index"
-              :title="step.title"
-              @click="onClickStep(step, index)"
             >
+              <span
+                slot="title"
+                @click="onClickStep(step, index)"
+              >
+                {{ step.title }}
+              </span>
               <a-icon
                 :type="step.icon"
                 slot="icon"
+                @click="onClickStep(step, index)"
               />
             </a-step>
           </a-steps>

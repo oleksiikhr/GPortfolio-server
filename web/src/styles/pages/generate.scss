@@ -1,3 +1,5 @@
+@import "../variables";
+
 .pg_wrap {
   margin: 0 30px;
 }
@@ -6,8 +8,43 @@
   .ant-steps {
     margin-top: 20px;
     margin-bottom: 50px;
+    user-select: none;
   }
-  .ant-steps-item {
-    cursor: pointer;
+  .ant-steps-item-icon {
+    margin-right: 0;
+    > .ant-steps-icon i {
+      padding-right: 8px;
+      cursor: pointer;
+    }
+  }
+  .ant-steps-item-title {
+    > span {
+      cursor: pointer;
+    }
+    &:after {
+      cursor: context-menu;
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .pg_main {
+    .ant-steps {
+      display: flex;
+    }
+    .ant-steps-item-tail,
+    .ant-steps-item-content {
+      display: none !important;
+    }
+  }
+}
+
+@media only screen and (max-width: $tablet) {
+  .pg_main {
+    .ant-steps-item-title {
+      span {
+        display: none;
+      }
+    }
   }
 }

@@ -126,7 +126,7 @@
   }
 }
 
-@media only screen and (max-width: $table) {
+@media only screen and (max-width: $tablet) {
   .home_page {
     &:before {
       content: none;
