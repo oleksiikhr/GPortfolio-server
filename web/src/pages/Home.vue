@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import { REPOSITORY_GPORTFOLIO } from '../scripts/links'
+import { GENERATE_PAGE } from '../router/routes'
 import HireSvg from '@/components/svg/Hire'
 import WaveSvg from '@/components/svg/Wave'
 import LogoSvg from '@/components/svg/Logo'
@@ -63,22 +65,12 @@ export default {
   components: {
     HireSvg, WaveSvg, LogoSvg
   },
-  data() {
-    return {
-      rows: [
-        { text: 'Choose Template' },
-        { text: 'Customize' },
-        { text: 'Preview' },
-        { text: 'Deploy' }
-      ]
-    }
-  },
   methods: {
     onClickGithub() {
-      window.open('https://github.com/GPortfolio/GPortfolio', '_blank')
+      window.open(REPOSITORY_GPORTFOLIO, '_blank')
     },
     onClickTryIt() {
-      this.$router.push({ name: 'generate' })
+      this.$router.push({ name: GENERATE_PAGE })
     }
   }
 }
