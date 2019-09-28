@@ -30,16 +30,3 @@
   font-size: 40px;
   color: $primary;
 }
-
-/*
- * Content
- */
-.cs_wrap {
-  .title {
-    border-bottom: 1px solid #eee;
-    padding-bottom: 5px;
-  }
-  * + .title {
-    margin-top: 50px;
-  }
-}

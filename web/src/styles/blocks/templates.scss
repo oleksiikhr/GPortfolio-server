@@ -1,0 +1,25 @@
+.block_templates {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px;
+  // TODO
+  &.selected {
+    .ant-card {
+      opacity: .8;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+  .ant-card {
+    overflow: hidden;
+  }
+  .ant-card-extra {
+    margin-left: 10px;
+  }
+  .ant-card-cover {
+    &, > img {
+      height: 100%;
+    }
+  }
+}

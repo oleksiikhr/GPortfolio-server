@@ -1,0 +1,17 @@
+.component_block {
+  margin-top: 50px;
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.cb_title {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  > a {
+    display: inline-block;
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
+}
