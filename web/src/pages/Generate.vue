@@ -9,7 +9,7 @@
               v-for="(step, index) in steps"
               :key="index"
               :title="step.title"
-              @click="onClickStep"
+              @click="onClickStep(step, index)"
             >
               <a-icon
                 :type="step.icon"
@@ -45,21 +45,21 @@ export default {
       }, {
         title: 'Customize',
         icon: 'setting',
-        content: Customize
+        component: Customize
       }, {
         title: 'Preview',
         icon: 'eye',
-        content: Preview
+        component: Preview
       }, {
         title: 'Deploy',
         icon: 'database',
-        content: Deploy
+        component: Deploy
       }]
     }
   },
   methods: {
-    onClickStep() {
-      console.log('onClickStep')
+    onClickStep(_, index) {
+      this.current = index
     }
   }
 }

@@ -4,7 +4,10 @@
 
 .pg_main {
   .ant-steps {
-    margin-top: 10px;
-    margin-bottom: 40px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+  }
+  .ant-steps-item {
+    cursor: pointer;
   }
 }
