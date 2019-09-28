@@ -1,14 +1,17 @@
 'use strict'
 
+import Generate from '@/pages/Generate'
+import Home from '@/pages/Home'
+
 export default [
   {
     path: '/',
     name: 'home',
-    component: () => import('@/pages/Home')
+    component: Home
   },
   {
-    path: '/steps',
-    name: 'steps',
-    component: () => import('@/pages/Steps')
+    path: '/generate',
+    name: 'generate',
+    component: Generate
   }
 ]

@@ -1,0 +1,151 @@
+@import "../variables";
+
+.home_page {
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(../../svg/background.svg) no-repeat;
+    background-position-x: right;
+    background-size: 400px;
+    transform: rotateX(0) rotateY(180deg);
+    z-index: -1;
+  }
+}
+
+.hp_header__wrap {
+  display: flex;
+  justify-content: center;
+  margin: 0 50px;
+}
+
+/*
+ * Left
+ */
+.hp_header_left {
+  display: flex;
+  max-width: 750px;
+  margin-right: 50px;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 100px;
+  h1 {
+    color: $primary;
+    font-weight: 900;
+    font-size: 3rem;
+    margin-bottom: 0;
+  }
+  p {
+    font-size: 1.5rem;
+    color: #949494;
+  }
+  button {
+    width: 200px;
+    height: 45px;
+    border-radius: 10px;
+    font-weight: bold;
+    margin: 0 10px 20px;
+  }
+}
+
+.hp_header_left__actions {
+  justify-content: center;
+}
+
+.hp_header_left__contributors {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 50px;
+  > * {
+    margin: 0 3px 5px;
+  }
+  .ant-avatar {
+    opacity: .7;
+    transition: .2s opacity;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+/*
+ * Right
+ */
+.hp_header_right {
+  svg {
+    width: 700px;
+  }
+}
+
+/*
+ * Other
+ */
+.hp_wave {
+  margin-top: -8%;
+}
+
+@media only screen and (max-width: $laptopL) {
+  .home_page {
+    > div, > header {
+      margin: 0 30px;
+    }
+  }
+  .hp_header__wrap {
+    display: block;
+    margin: 0 auto;
+    max-width: 900px;
+    text-align: center;
+  }
+  .hp_header_left {
+    align-items: center;
+    margin: 0 0 50px;
+    max-width: none;
+    button {
+      margin-bottom: 20px;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  .hp_header_left__contributors {
+    justify-content: center;
+    margin-top: 30px;
+  }
+  .hp_header_right {
+    svg {
+      max-width: 650px;
+      width: 85%;
+      height: 100%;
+    }
+  }
+  .hp_wave {
+    margin-top: 0;
+  }
+}
+
+@media only screen and (max-width: $table) {
+  .home_page {
+    &:before {
+      content: none;
+    }
+  }
+  .hp_header_left {
+    h1 {
+      font-size: 2.3rem;
+    }
+    p {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+@media only screen and (max-width: $mobileM) {
+  .hp_header_left {
+    p {
+      margin-top: 15px;
+    }
+  }
+}

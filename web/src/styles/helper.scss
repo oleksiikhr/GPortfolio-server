@@ -1,0 +1,21 @@
+@import "variables";
+
+// Width
+.mw_4k {
+  max-width: $size4k;
+}
+
+.mv_laptop_l {
+  max-width: $laptopL;
+}
+
+// Margin
+.mc {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// Text
+.tc {
+  text-align: center;
+}
