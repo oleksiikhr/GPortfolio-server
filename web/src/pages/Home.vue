@@ -53,9 +53,9 @@
 </template>
 
 <script>
+import { GENERATE_PAGE } from '@/router/routes'
 import AppLogo from '@/components/global/Logo'
-import { GENERATE_PAGE } from '../router/routes'
-import { ORGANIZATION } from '../scripts/links'
+import { ORGANIZATION } from '@/scripts/links'
 import HireSvg from '@/components/svg/Hire'
 import WaveSvg from '@/components/svg/Wave'
 

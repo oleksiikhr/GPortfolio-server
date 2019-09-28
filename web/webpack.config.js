@@ -13,11 +13,11 @@ require('dotenv').config({
   path: path.resolve(__dirname, '../.env')
 })
 
-module.exports = (env, { mode }) => {
-  const isProd = mode === 'production'
+module.exports = (env, argv) => {
+  const isProd = argv && argv.mode === 'production'
 
   const config = {
-    mode,
+    mode: isProd ? 'production' : 'development',
     entry: [
       'ant-design-vue/dist/antd.less',
       './src/main.js',
