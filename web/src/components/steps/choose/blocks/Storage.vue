@@ -3,7 +3,7 @@
     <a-alert
       message="You can restore the latest data by simply selecting one of the items"
       type="info"
-      showIcon
+      show-icon
     />
   </div>
 </template>

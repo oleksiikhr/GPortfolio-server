@@ -2,7 +2,9 @@
   <div class="component_logo tc">
     <div class="cl_wrap mc">
       <logo-svg class="cl_svg" />
-      <div class="cl_beta">Beta</div>
+      <div class="cl_beta">
+        Beta
+      </div>
     </div>
   </div>
 </template>

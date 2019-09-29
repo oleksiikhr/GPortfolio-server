@@ -7,7 +7,7 @@
     v-on="item"
   >
     <template v-if="hasChildren">
-      <menu--item
+      <menu-item
         v-for="(childItem, index) in item.children"
         :key="index"
         :item="childItem"
@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: 'Menu-Item',
+  name: 'MenuItem',
   props: {
     item: {
       type: Object,

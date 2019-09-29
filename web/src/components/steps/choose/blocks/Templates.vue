@@ -4,7 +4,7 @@
       message="Choose the template you want to use"
       type="info"
       class="mb-20"
-      showIcon
+      show-icon
     />
     <div class="block_templates">
       <template-item

@@ -16,8 +16,8 @@
                 {{ step.title }}
               </span>
               <a-icon
-                :type="step.icon"
                 slot="icon"
+                :type="step.icon"
                 @click="onClickStep(step, index)"
               />
             </a-step>

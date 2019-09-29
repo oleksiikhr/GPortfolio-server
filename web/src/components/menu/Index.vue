@@ -1,7 +1,7 @@
 <template>
   <a-anchor
-    :offsetTop="20"
-    :offsetBottom="20"
+    :offset-top="20"
+    :offset-bottom="20"
     class="component_menu"
   >
     <menu-item
