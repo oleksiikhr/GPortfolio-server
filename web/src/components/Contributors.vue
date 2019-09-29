@@ -1,14 +1,17 @@
 <template>
   <div class="component_contributors">
-    <!--TODO Load from file and use random-->
     <a
-      v-for="i in 50"
-      :key="i"
-      href="#"
+      v-for="(contributor, index) in list"
+      :key="index"
+      :href="`${GITHUB_DOMAIN}/${contributor.login}`"
+      :title="contributor.name"
+      target="_blank"
+      rel="noreferrer"
     >
       <a-avatar
         icon="user"
-        alt="TODO"
+        :src="contributor.image"
+        :alt="contributor.name"
       />
     </a>
     <a-popover placement="bottom">
@@ -17,12 +20,13 @@
       </template>
       <a
         :href="ORGANIZATION"
+        rel="noreferrer"
         target="_blank"
       >
         <a-avatar
           type="primary"
           icon="plus"
-          alt="TODO"
+          alt="Become a contributor"
         />
       </a>
     </a-popover>
@@ -30,12 +34,32 @@
 </template>
 
 <script>
-import { ORGANIZATION } from '@/scripts/links'
+import { ORGANIZATION, GITHUB_DOMAIN } from '@/scripts/links'
+import contributors from '@/data/contributors'
+import { shuffle } from '@/scripts/arr'
+
+/**
+ * How many users (random) we display on page
+ * @type {number}
+ */
+const COUNT_USERS = 50
 
 export default {
   data() {
     return {
-      ORGANIZATION
+      ORGANIZATION,
+      GITHUB_DOMAIN
+    }
+  },
+  computed: {
+    list() {
+      const users = Object.entries(contributors)
+        .reduce((arr, [login, contributor]) => {
+          arr.push({ ...contributor, login })
+          return arr
+        }, [])
+
+      return shuffle(users).slice(0, COUNT_USERS)
     }
   }
 }

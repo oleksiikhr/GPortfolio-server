@@ -39,7 +39,7 @@ export default {
         return this.href[0] === '#' ? this.href.substring(1) : this.href
       }
 
-      return this.href || this.title.trim().toLowerCase().replace(/[^a-z0-9]/g, '-')
+      return this.title.trim().toLowerCase().replace(/[^a-z0-9]/g, '-')
     },
     link() {
       return '#' + this.id
