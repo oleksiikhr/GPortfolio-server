@@ -7,29 +7,27 @@
       showIcon
     />
     <div class="block_templates">
-      <a-card
-        v-for="i in 10"
-        :key="i"
-        hoverable
-        title="Some template"
-      >
-        <img
-          :src="`https://picsum.photos/id/${i + 250}/200/200`"
-          alt="example"
-          loading="lazy"
-          slot="cover"
-        />
-        <a-badge
-          slot="extra"
-          status="error"
-        />
-      </a-card>
+      <template-item
+        v-for="(template, index) in templates"
+        :key="index"
+        :template="template"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import TemplateItem from '@/components/steps/choose/templates/Item'
+import templates from '@/data/templates'
+
 export default {
-  //
+  components: {
+    TemplateItem
+  },
+  data() {
+    return {
+      templates
+    }
+  }
 }
 </script>
