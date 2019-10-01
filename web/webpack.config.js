@@ -34,10 +34,9 @@ module.exports = (env, argv) => {
       publicPath: '/',
       contentBase: './dist',
       host: process.env.WEBPACK_DEV_HOST || 'localhost',
-      port: process.env.WEBPACK_DEV_PORT || '3000',
+      port: +process.env.WEBPACK_DEV_PORT || 3000,
       hot: true,
       clientLogLevel: 'error',
-      disableHostCheck: true,
       proxy: {
         '/api/*': {
           target: process.env.APP_ADDR || 'http://localhost:8080/',
@@ -48,7 +47,7 @@ module.exports = (env, argv) => {
     module: {
       rules: [
         {
-          test: /\.scss$/,
+          test: /\.s?css$/,
           use: [
             {
               loader: MiniCssExtractPlugin.loader,
@@ -167,7 +166,7 @@ module.exports = (env, argv) => {
             src: path.resolve('public/icon.png')
           }
         ],
-        name: `GPortfolio`,
+        name: 'GPortfolio',
         short_name: 'GPortfolio',
         start_url: '/',
         theme_color: '#fff'
