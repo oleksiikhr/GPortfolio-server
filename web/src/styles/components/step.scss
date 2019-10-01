@@ -38,11 +38,17 @@
 }
 
 .cs_wrap_navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   text-align: right;
   margin-top: 30px;
   padding: 20px;
   border-top: 1px solid #e8e8e8;
   .ant-btn {
     min-width: 150px;
+    &.cs_wrap_navigation__next {
+      margin-left: auto;
+    }
   }
 }

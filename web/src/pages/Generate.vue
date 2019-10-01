@@ -42,7 +42,6 @@ export default {
   },
   data() {
     return {
-      current: 0,
       steps: [{
         title: 'Choose Template',
         icon: 'inbox',
@@ -60,6 +59,16 @@ export default {
         icon: 'database',
         component: Deploy
       }]
+    }
+  },
+  computed: {
+    current: {
+      get() {
+        return this.$store.state.app.step
+      },
+      set(value) {
+        this.$store.commit('app/SET_STEP', value)
+      }
     }
   },
   methods: {

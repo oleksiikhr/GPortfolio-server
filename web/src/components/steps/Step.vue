@@ -14,7 +14,15 @@
       <div class="cs_wrap_navigation">
         <a-button
           type="primary"
-          size="large"
+          class="cs_wrap_navigation__prev"
+          @click="onClickPrev"
+        >
+          <a-icon type="left" />Prev
+        </a-button>
+        <a-button
+          type="primary"
+          class="cs_wrap_navigation__next"
+          @click="onClickNext"
         >
           Next<a-icon type="right" />
         </a-button>
@@ -37,6 +45,24 @@ export default {
     menu: {
       type: Array,
       default: () => []
+    }
+  },
+  computed: {
+    current: {
+      get() {
+        return this.$store.state.app.step
+      },
+      set(value) {
+        this.$store.commit('app/SET_STEP', value)
+      }
+    }
+  },
+  methods: {
+    onClickPrev() {
+      this.current -= 1
+    },
+    onClickNext() {
+      this.current += 1
     }
   }
 }
