@@ -2,11 +2,13 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 20px;
-  // TODO
-  &.selected {
+  &.has_active {
     .ant-card {
-      opacity: .8;
+      opacity: .7;
       &:hover {
+        opacity: 1;
+      }
+      &.active {
         opacity: 1;
       }
     }

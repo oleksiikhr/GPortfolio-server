@@ -27,7 +27,7 @@ export default {
       type: String,
       default: ''
     },
-    level: { // for Step.vue
+    level: {
       type: [Number, String],
       default: 1,
       validator: (val) => +val > 0 && +val < 4

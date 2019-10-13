@@ -35,7 +35,7 @@ export default {
         return {}
       }
 
-      return contributors[this.template.author]
+      return contributors[this.template.author] || {}
     }
   }
 }

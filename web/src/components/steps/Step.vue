@@ -13,6 +13,7 @@
       </div>
       <div class="cs_wrap_navigation">
         <a-button
+          v-if="current > 0"
           type="primary"
           class="cs_wrap_navigation__prev"
           @click="onClickPrev"
@@ -20,6 +21,7 @@
           <a-icon type="left" />Prev
         </a-button>
         <a-button
+          v-if="current < 3"
           type="primary"
           class="cs_wrap_navigation__next"
           @click="onClickNext"
