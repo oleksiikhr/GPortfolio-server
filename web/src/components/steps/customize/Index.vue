@@ -1,20 +1,23 @@
 <template>
-  <step :menu="menu">
-    Customize
-  </step>
+  <auto-step :menu="menu" />
 </template>
 
 <script>
-import Step from '@/components/steps/Step'
+import GlobalBlock from '@/components/steps/customize/blocks/Global'
+import AutoStep from '@/components/steps/AutoStep'
 
 export default {
   components: {
-    Step
+    AutoStep
   },
   data() {
     return {
       menu: [
-        //
+        {
+          component: GlobalBlock,
+          href: '#global',
+          title: 'Global'
+        }
       ]
     }
   }

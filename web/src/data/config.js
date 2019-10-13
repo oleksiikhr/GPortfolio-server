@@ -1,5 +1,9 @@
 'use strict'
 
+/*
+ * Structure like on main Repository
+ */
+
 export default {
   global: {
     template: '',
