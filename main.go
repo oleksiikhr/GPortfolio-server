@@ -9,13 +9,13 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var htmlFile = []byte("")
+var homePageFile = []byte("")
 
 func main() {
 	// Load .env file
 	_ = godotenv.Load()
 
-	loadHtmlFiles()
+	loadHomePageHtml()
 
 	// Routes
 	http.Handle("/static/", http.StripPrefix("/", http.FileServer(http.Dir("dist"))))
@@ -24,9 +24,9 @@ func main() {
 	startServer()
 }
 
-func loadHtmlFiles() {
+func loadHomePageHtml() {
 	var err error
-	htmlFile, err = ioutil.ReadFile("./dist/index.html")
+	homePageFile, err = ioutil.ReadFile("./dist/index.html")
 
 	if err != nil {
 		log.Fatal(err)
@@ -44,7 +44,7 @@ func push(w http.ResponseWriter, resources ...string) {
 func handleMain(w http.ResponseWriter, r *http.Request) {
 	push(w, "/static/main.js", "/static/main.css")
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	w.Write(htmlFile)
+	w.Write(homePageFile)
 }
 
 func startServer() {
