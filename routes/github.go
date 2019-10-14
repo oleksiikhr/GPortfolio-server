@@ -1,4 +1,4 @@
-package api
+package routes
 
 import (
 	"bytes"
@@ -10,31 +10,33 @@ import (
 	"github.com/GPortfolio/server/config"
 )
 
+// App this is the core
+type App struct {
+	Redis *redis.Client
+	Html  []byte
+}
+
 // githubDomain for main website
 const githubDomain = "https://github.com"
 
-type githubOauthSuccess struct {
-	AccessToken string `json:"access_token"`
-	Scope       string `json:"scope"`
-	TokenType   string `json:"token_type"`
-}
-
-type githubOauthFailed struct {
+// githubOauthResponse after get user access token
+type githubOauthResponse struct {
+	AccessToken      string `json:"access_token"`
+	Scope            string `json:"scope"`
+	TokenType        string `json:"token_type"`
 	Error            string `json:"error"`
 	ErrorDescription string `json:"error_description"`
 	ErrorUri         string `json:"error_uri"`
 }
 
 // GithubRoutes register routes for Github
-func GithubRoutes(redis redis.Client) {
-	http.HandleFunc("/github/oauth/redirect", handleGithubRedirect)
-	http.HandleFunc("/github/oauth/accept", func(w http.ResponseWriter, r *http.Request) {
-		handleGithubAccept(w, r, redis)
-	})
+func (app App) GithubRoutes() {
+	http.HandleFunc("/github/oauth/redirect", app.handleGithubRedirect)
+	http.HandleFunc("/github/oauth/accept", app.handleGithubAccept)
 }
 
 // handleRedirect user to Github oauth page
-func handleGithubRedirect(w http.ResponseWriter, r *http.Request) {
+func (App) handleGithubRedirect(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, githubDomain+"/login/oauth/authorize"+
 		"?client_id="+config.Env("GITHUB_APP_ID", "")+
 		"&redirect_uri="+url.QueryEscape(config.GetUrlWebsite()+"/github/oauth/accept")+
@@ -42,14 +44,14 @@ func handleGithubRedirect(w http.ResponseWriter, r *http.Request) {
 }
 
 // handleGithubAccept user redirected after oauth page on Github website
-func handleGithubAccept(w http.ResponseWriter, r *http.Request, redis redis.Client) {
+func (App) handleGithubAccept(w http.ResponseWriter, r *http.Request) {
 	requestBody, _ := json.Marshal(map[string]string{
 		"client_id":     config.Env("GITHUB_APP_ID", ""),
 		"client_secret": config.Env("GITHUB_APP_SECRET", ""),
 		"code":          r.URL.Query().Get("code"),
 	})
 
-	// TODO Validation
+	// TODO Validation + state
 
 	// Send request to get access token from received code
 	req, err := http.NewRequest(http.MethodPost, githubDomain+"/login/oauth/access_token", bytes.NewBuffer(requestBody))
@@ -69,25 +71,19 @@ func handleGithubAccept(w http.ResponseWriter, r *http.Request, redis redis.Clie
 
 	defer resp.Body.Close()
 
-	if resp.StatusCode == 200 {
-		var oauthResp githubOauthFailed
-		err = json.NewDecoder(resp.Body).Decode(&oauthResp)
-		if err != nil {
-			respJsonFailed(w, err.Error())
-			return
-		}
-
-		respJsonFailed(w, oauthResp.ErrorDescription)
-		return
-	}
-
-	var oauthResp githubOauthSuccess
+	var oauthResp githubOauthResponse
 	err = json.NewDecoder(resp.Body).Decode(&oauthResp)
 	if err != nil {
 		respJsonFailed(w, err.Error())
 		return
 	}
 
-	// TODO Store on Redis
+	if oauthResp.Error != "" {
+		respJsonFailed(w, oauthResp.ErrorDescription)
+		return
+	}
+
+	// TODO Store on Redis to the current user
+	// oauthResp.AccessToken
 	w.Write([]byte("Token received, you can close the tab"))
 }

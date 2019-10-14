@@ -7,8 +7,8 @@ import (
 	"math/rand"
 	"net/http"
 
-	"github.com/GPortfolio/server/api"
 	"github.com/GPortfolio/server/config"
+	"github.com/GPortfolio/server/routes"
 	"github.com/go-redis/redis/v7"
 	"github.com/joho/godotenv"
 )
@@ -18,7 +18,7 @@ func main() {
 	_ = godotenv.Load()
 
 	// Connect to Redis
-	redis, err := cRedis()
+	rClient, err := cRedis()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -29,29 +29,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Frontend Routes
-	http.Handle("/static/", http.StripPrefix("/", http.FileServer(http.Dir("dist"))))
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		handleMain(w, html)
-	})
-
-	// Api Routes
-	api.GithubRoutes(redis)
+	// Run application with routes
+	app := routes.App{Redis: rClient, Html: html}
+	app.GlobalRoutes()
+	app.GithubRoutes()
 
 	// Run server
 	startServer()
-}
-
-// handleMain handler for displaying the page
-func handleMain(w http.ResponseWriter, html []byte) {
-	push(w, "/static/main.js", "/static/main.css")
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	w.Write(html)
-}
-
-// loadHomePageHtml it's index.html from dist folder (frontend/web after build)
-func loadHomePageHtml() ([]byte, error) {
-	return ioutil.ReadFile("./dist/index.html")
 }
 
 // newRedis create a new connection to Redis client
@@ -66,24 +50,27 @@ func cRedis() (*redis.Client, error) {
 	return client, err
 }
 
-// push to speed up content delivery (http/2)
-func push(w http.ResponseWriter, resources ...string) {
-	if pusher, ok := w.(http.Pusher); ok {
-		for _, resource := range resources {
-			_ = pusher.Push(resource, nil)
-		}
-	}
+// loadHomePageHtml it's index.html from dist folder (frontend/web after build)
+func loadHomePageHtml() ([]byte, error) {
+	return ioutil.ReadFile("./dist/index.html")
 }
 
 // startServer starts the server on http/https depending on the environment
 func startServer() {
 	addr := config.Env("APP_ADDR", "localhost:8080")
 	fmt.Println("Server Run:", addr)
+	var err error
 
 	if config.Env("APP_TLS", "false") == "true" {
-		http.ListenAndServeTLS(addr, config.Env("APP_TLS_CERT", ""), config.Env("APP_TLS_KEY", ""), nil)
+		err = http.ListenAndServeTLS(addr, config.Env("APP_TLS_CERT", ""), config.Env("APP_TLS_KEY", ""), nil)
 	} else {
-		http.ListenAndServe(addr, nil)
+		err = http.ListenAndServe(addr, nil)
+	}
+
+	if err == nil {
+		fmt.Println("Server stopped")
+	} else {
+		fmt.Println(err)
 	}
 }
 
