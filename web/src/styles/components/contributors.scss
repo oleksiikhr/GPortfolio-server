@@ -1,0 +1,29 @@
+@import "../variables";
+
+.component_contributors {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 50px;
+  > a {
+    margin: 0 3px 5px;
+    &:last-child {
+      span {
+        background-color: $primary;
+      }
+    }
+  }
+  .ant-avatar {
+    opacity: .8;
+    transition: .2s opacity;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+@media only screen and (max-width: $laptopL) {
+  .component_contributors {
+    justify-content: center;
+    margin-top: 30px;
+  }
+}

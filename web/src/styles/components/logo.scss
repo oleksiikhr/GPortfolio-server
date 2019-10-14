@@ -1,0 +1,24 @@
+@import "../variables";
+
+.component_logo {
+  padding: 20px 0;
+}
+
+.cl_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cl_svg {
+  width: 190px;
+}
+
+.cl_beta {
+  align-self: flex-start;
+  color: red;
+  font-size: .7rem;
+  font-weight: bold;
+  user-select: none;
+  margin-left: 2px;
+}

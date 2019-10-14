@@ -1,0 +1,42 @@
+.component_block {
+  > .cb_title {
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    > .cb_link {
+      display: inline-block;
+      font-weight: bold;
+    }
+  }
+}
+
+/*
+ * Levels
+ */
+
+.cb_level_1 {
+  margin-top: 50px;
+  > .cb_title {
+    border-bottom: 1px solid #eee;
+    > .cb_link {
+      font-size: 1.4rem;
+    }
+  }
+}
+
+.cb_level_2 {
+  margin-top: 30px;
+  > .cb_title {
+    > .cb_link {
+      font-size: 1.3rem;
+    }
+  }
+}
+
+.cb_level_3 {
+  margin-top: 25px;
+  > .cb_title {
+    > .cb_link {
+      font-size: 1.2rem;
+    }
+  }
+}

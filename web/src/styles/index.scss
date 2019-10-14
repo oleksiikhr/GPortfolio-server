@@ -1,0 +1,17 @@
+// Global styles
+@import "global";
+@import "helper";
+
+// Components
+@import "components/logo";
+@import "components/contributors";
+@import "components/step";
+@import "components/menu";
+@import "components/block";
+
+// Block
+@import "blocks/templates";
+
+// Pages
+@import "pages/home";
+@import "pages/generate";

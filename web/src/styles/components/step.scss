@@ -1,0 +1,54 @@
+@import "../variables";
+
+.component_step {
+  display: flex;
+}
+
+.cs_aside {
+  width: 200px;
+  margin-right: 20px;
+}
+
+.cs_wrap {
+  flex: 1;
+  min-height: 500px;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(143, 168, 191, 0.35);
+}
+
+.cs_wrap_content {
+  padding: 20px;
+  > .component_block:first-child {
+    margin-top: 0;
+  }
+}
+
+.cs_button {
+  margin-top: 20px;
+}
+
+.cs_back_top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 40px;
+  color: $primary;
+}
+
+.cs_wrap_navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: right;
+  margin-top: 30px;
+  padding: 20px;
+  border-top: 1px solid #e8e8e8;
+  .ant-btn {
+    min-width: 150px;
+    &.cs_wrap_navigation__next {
+      margin-left: auto;
+    }
+  }
+}

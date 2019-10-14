@@ -1,0 +1,28 @@
+.block_templates {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px;
+  &.has_active {
+    .ant-card {
+      opacity: .7;
+      &:hover {
+        opacity: 1;
+      }
+      &.active {
+        opacity: 1;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .09);
+      }
+    }
+  }
+  .ant-card {
+    overflow: hidden;
+  }
+  .ant-card-extra {
+    margin-left: 10px;
+  }
+  .ant-card-cover {
+    &, > img {
+      height: 100%;
+    }
+  }
+}
