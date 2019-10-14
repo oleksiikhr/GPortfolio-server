@@ -120,7 +120,6 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new VueLoaderPlugin,
-      new CleanWebpackPlugin,
       new HtmlWebpackPlugin({
         filename: 'index.html',
         template: './index.ejs',
@@ -154,6 +153,7 @@ module.exports = (env, argv) => {
   }
 
   if (isProd) {
+    config.plugins.unshift(new CleanWebpackPlugin)
     config.plugins.push(
       new WebpackPwaManifest({
         background_color: '#fff',
