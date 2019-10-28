@@ -3,11 +3,11 @@ package routes
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/go-redis/redis/v7"
 	"net/http"
 	"net/url"
 
 	"github.com/GPortfolio/server/config"
+	"github.com/go-redis/redis/v7"
 )
 
 // App this is the core
