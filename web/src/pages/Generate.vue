@@ -30,10 +30,10 @@
 </template>
 
 <script>
-import ChooseTemplate from '@/components/steps/choose'
-import Customize from '@/components/steps/customize'
-import Preview from '@/components/steps/preview'
-import Deploy from '@/components/steps/deploy'
+import ChooseTemplate from '@/components/steps/choose/Index'
+import Customize from '@/components/steps/customize/Index'
+import Preview from '@/components/steps/preview/Index'
+import Deploy from '@/components/steps/deploy/Index'
 import AppLogo from '@/components/global/Logo'
 
 export default {
