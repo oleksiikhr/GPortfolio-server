@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"net/http"
 
 	"github.com/GPortfolio/server/config"
@@ -72,18 +71,4 @@ func startServer() {
 	} else {
 		fmt.Println(err)
 	}
-}
-
-// rnd generate a random of symbols specified length
-// https://stackoverflow.com/a/31832326/9612245
-// TODO Is needed?
-func rnd(n int) string {
-	letterRunes := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
-	b := make([]rune, n)
-
-	for i := range b {
-		b[i] = letterRunes[rand.Intn(len(letterRunes))]
-	}
-
-	return string(b)
 }
