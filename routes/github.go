@@ -7,14 +7,7 @@ import (
 	"net/url"
 
 	"github.com/GPortfolio/server/config"
-	"github.com/go-redis/redis/v7"
 )
-
-// App this is the core
-type App struct {
-	Redis *redis.Client
-	Html  []byte
-}
 
 // githubDomain for main website
 const githubDomain = "https://github.com"
@@ -30,7 +23,7 @@ type githubOauthResponse struct {
 }
 
 // GithubRoutes register routes for Github
-func (app App) GithubRoutes() {
+func (app App) githubRoutes() {
 	http.HandleFunc("/github/oauth/redirect", app.handleGithubRedirect)
 	http.HandleFunc("/github/oauth/accept", app.handleGithubAccept)
 }
@@ -46,8 +39,8 @@ func (App) handleGithubRedirect(w http.ResponseWriter, r *http.Request) {
 // handleGithubAccept user redirected after oauth page on Github website
 func (App) handleGithubAccept(w http.ResponseWriter, r *http.Request) {
 	requestBody, _ := json.Marshal(map[string]string{
-		"client_id":     config.Env("GITHUB_APP_ID", ""),
 		"client_secret": config.Env("GITHUB_APP_SECRET", ""),
+		"client_id":     config.Env("GITHUB_APP_ID", ""),
 		"code":          r.URL.Query().Get("code"),
 	})
 
