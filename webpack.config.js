@@ -163,7 +163,7 @@ module.exports = (env, argv) => {
           {
             destination: 'static/icons',
             sizes: [96, 128, 192, 256, 384, 512],
-            src: path.resolve('public/icon.png')
+            src: require('./web/images/icon.png')
           }
         ],
         name: 'GPortfolio',
