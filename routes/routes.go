@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"encoding/json"
 	"log"
 	"math/rand"
 	"net/http"
@@ -32,7 +33,7 @@ func (h *Handlers) authMiddleware(next http.HandlerFunc) http.HandlerFunc {
 			// 	set app.User = redis.data
 		}
 
-		w.Header().Set("Security-Key", rnd(25))
+		w.Header().Set("Security-Key", rnd(40))
 		w.Header().Set("Security-Pass", rnd(60))
 
 		h.Logger.Println("HERE", r.URL)
@@ -73,4 +74,10 @@ func response(w http.ResponseWriter, msg string, statusCode int) map[string]inte
 	response["data"] = nil
 
 	return response
+}
+
+// responseQuick json by specific structure
+func responseQuick(w http.ResponseWriter, msg string, statusCode int) {
+	response := response(w, msg, statusCode)
+	json.NewEncoder(w).Encode(response)
 }
