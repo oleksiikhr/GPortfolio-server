@@ -4,13 +4,13 @@ import "os"
 
 const (
 	// ProjectName from Github repository
-	ProjectName      = "GPortfolio"
+	ProjectName = "GPortfolio"
 	// HomePageFile path dist from web
-	HomePageFile     = "./dist/index.html"
+	HomePageFile = "./dist/index.html"
 	// DefaultRedisAddr connect to the redis by this address if not present
 	DefaultRedisAddr = "localhost:6379"
 	// DefaultAppAddr run application by this address if not present
-	DefaultAppAddr   = "localhost:8080"
+	DefaultAppAddr = "localhost:8080"
 )
 
 // Env get environment of system, can be modified in .env file

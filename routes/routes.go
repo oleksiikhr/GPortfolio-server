@@ -12,7 +12,6 @@ import (
 type Handlers struct {
 	Redis  *redis.Client
 	Logger *log.Logger
-	Html   []byte
 }
 
 // NewRoutes register all exists routes

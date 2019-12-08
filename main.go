@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -25,17 +24,10 @@ func main() {
 		logger.Fatal(err)
 	}
 
-	// Load html file
-	html, err := loadHomePageHtml()
-	if err != nil {
-		logger.Fatal(err)
-	}
-
 	// Run application with routes
 	h := routes.Handlers{
 		Redis:  redisClient,
 		Logger: logger,
-		Html:   html,
 	}
 
 	h.NewRoutes()
@@ -54,11 +46,6 @@ func newRedis() (*redis.Client, error) {
 	_, err := client.Ping().Result()
 
 	return client, err
-}
-
-// loadHomePageHtml it's index.html from dist folder (frontend/web after build)
-func loadHomePageHtml() ([]byte, error) {
-	return ioutil.ReadFile(config.HomePageFile)
 }
 
 // startServer starts the server on http/https depending on the environment
