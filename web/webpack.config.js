@@ -2,7 +2,7 @@
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const WebpackPwaManifest = require ('webpack-pwa-manifest')
+const WebpackPwaManifest = require('webpack-pwa-manifest')
 const { VueLoaderPlugin } = require('vue-loader/lib/index')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { GenerateSW } = require('workbox-webpack-plugin')
@@ -20,8 +20,8 @@ module.exports = (env, argv) => {
     mode: isProd ? 'production' : 'development',
     entry: [
       'ant-design-vue/dist/antd.less',
-      './src/main.js',
-      './src/styles/index.scss'
+      './src/styles/index.scss',
+      './src/main.js'
     ],
     devtool: isProd ? false : 'source-map',
     output: {
@@ -39,7 +39,7 @@ module.exports = (env, argv) => {
       clientLogLevel: 'error',
       proxy: {
         '/api/*': {
-          target: process.env.APP_ADDR || 'http://localhost:8080/',
+          target: (process.env.APP_TLS === 'true' ? 'https://' : 'http://') + (process.env.APP_ADDR || 'localhost:8080'),
           changeOrigin: true
         }
       }
@@ -127,14 +127,14 @@ module.exports = (env, argv) => {
         meta: {
           description: 'Create an automatic portfolio based on Github and other various data',
           robots: 'index, follow',
-          viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no',
+          viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'
         },
         minify: isProd ? {
           collapseWhitespace: true,
           removeComments: true,
           removeRedundantAttributes: true,
           removeScriptTypeAttributes: true,
-          removeStyleLinkTypeAttributes: true,
+          removeStyleLinkTypeAttributes: true
         } : false,
         chunksSortMode: 'none'
       }),
