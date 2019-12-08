@@ -45,10 +45,11 @@ func (h *Handlers) authMiddleware(next http.HandlerFunc) http.HandlerFunc {
 // rnd generate a random of symbols specified length
 func rnd(n int) string {
 	letterRunes := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+	letterRunesLen := len(letterRunes)
 	b := make([]rune, n)
 
 	for i := range b {
-		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+		b[i] = letterRunes[rand.Intn(letterRunesLen)]
 	}
 
 	return string(b)
