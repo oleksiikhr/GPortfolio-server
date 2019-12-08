@@ -12,19 +12,12 @@ import (
 	"github.com/joho/godotenv"
 )
 
-const (
-	projectName      = "GPortfolio"
-	homePageFile     = "./dist/index.html"
-	defaultRedisAddr = "localhost:6379"
-	defaultAppAddr   = "localhost:8080"
-)
-
 func main() {
 	// Load .env file
 	_ = godotenv.Load()
 
 	// Create a new logger
-	logger := log.New(os.Stdout, projectName+" ", log.LstdFlags|log.Lshortfile)
+	logger := log.New(os.Stdout, config.ProjectName+" ", log.LstdFlags|log.Lshortfile)
 
 	// Connect to Redis
 	redisClient, err := newRedis()
@@ -39,13 +32,13 @@ func main() {
 	}
 
 	// Run application with routes
-	app := routes.App{
+	h := routes.Handlers{
 		Redis:  redisClient,
 		Logger: logger,
 		Html:   html,
 	}
 
-	app.NewRoutes()
+	h.NewRoutes()
 
 	// Run server
 	startServer(logger)
@@ -54,7 +47,7 @@ func main() {
 // newRedis create a new connection to Redis client
 func newRedis() (*redis.Client, error) {
 	client := redis.NewClient(&redis.Options{
-		Addr: config.Env("REDIS_ADDR", defaultRedisAddr),
+		Addr: config.Env("REDIS_ADDR", config.DefaultRedisAddr),
 	})
 
 	// Check connection
@@ -65,14 +58,14 @@ func newRedis() (*redis.Client, error) {
 
 // loadHomePageHtml it's index.html from dist folder (frontend/web after build)
 func loadHomePageHtml() ([]byte, error) {
-	return ioutil.ReadFile(homePageFile)
+	return ioutil.ReadFile(config.HomePageFile)
 }
 
 // startServer starts the server on http/https depending on the environment
 func startServer(logger *log.Logger) {
 	var err error
 
-	addr := config.Env("APP_ADDR", defaultAppAddr)
+	addr := config.Env("APP_ADDR", config.DefaultAppAddr)
 	logger.Println("Server Running (" + addr + ")")
 
 	if config.Env("APP_TLS", "false") == "true" {

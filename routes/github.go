@@ -22,14 +22,14 @@ type githubOauthResponse struct {
 	ErrorUri         string `json:"error_uri"`
 }
 
-// GithubRoutes register routes for Github
-func (app App) githubRoutes() {
-	http.HandleFunc("/github/oauth/redirect", app.handleGithubRedirect)
-	http.HandleFunc("/github/oauth/accept", app.handleGithubAccept)
+// githubRoutes register routes for Github
+func (h *Handlers) githubRoutes() {
+	http.HandleFunc("/api/github/oauth/redirect", h.handleGithubRedirect)
+	http.HandleFunc("/api/github/oauth/accept", h.handleGithubAccept)
 }
 
 // handleRedirect user to Github oauth page
-func (App) handleGithubRedirect(w http.ResponseWriter, r *http.Request) {
+func (h *Handlers) handleGithubRedirect(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, githubDomain+"/login/oauth/authorize"+
 		"?client_id="+config.Env("GITHUB_APP_ID", "")+
 		"&redirect_uri="+url.QueryEscape(config.GetUrlWebsite()+"/github/oauth/accept")+
@@ -37,7 +37,7 @@ func (App) handleGithubRedirect(w http.ResponseWriter, r *http.Request) {
 }
 
 // handleGithubAccept user redirected after oauth page on Github website
-func (App) handleGithubAccept(w http.ResponseWriter, r *http.Request) {
+func (*Handlers) handleGithubAccept(w http.ResponseWriter, r *http.Request) {
 	requestBody, _ := json.Marshal(map[string]string{
 		"client_secret": config.Env("GITHUB_APP_SECRET", ""),
 		"client_id":     config.Env("GITHUB_APP_ID", ""),
@@ -49,7 +49,8 @@ func (App) handleGithubAccept(w http.ResponseWriter, r *http.Request) {
 	// Send request to get access token from received code
 	req, err := http.NewRequest(http.MethodPost, githubDomain+"/login/oauth/access_token", bytes.NewBuffer(requestBody))
 	if err != nil {
-		respJsonFailed(w, err.Error())
+		response := response(w, err.Error(), http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
 		return
 	}
 
@@ -58,7 +59,8 @@ func (App) handleGithubAccept(w http.ResponseWriter, r *http.Request) {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		respJsonFailed(w, err.Error())
+		response := response(w, err.Error(), http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
 		return
 	}
 
@@ -67,12 +69,14 @@ func (App) handleGithubAccept(w http.ResponseWriter, r *http.Request) {
 	var oauthResp githubOauthResponse
 	err = json.NewDecoder(resp.Body).Decode(&oauthResp)
 	if err != nil {
-		respJsonFailed(w, err.Error())
+		response := response(w, err.Error(), http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
 		return
 	}
 
 	if oauthResp.Error != "" {
-		respJsonFailed(w, oauthResp.ErrorDescription)
+		response := response(w, oauthResp.ErrorDescription, http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
 		return
 	}
 
