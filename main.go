@@ -7,7 +7,7 @@ import (
 
 	"github.com/GPortfolio/server/config"
 	"github.com/GPortfolio/server/routes"
-	"github.com/go-redis/redis/v7"
+	"github.com/GPortfolio/server/services/redis"
 	"github.com/joho/godotenv"
 )
 
@@ -19,7 +19,7 @@ func main() {
 	logger := log.New(os.Stdout, config.ProjectName+" ", log.LstdFlags|log.Lshortfile)
 
 	// Connect to Redis
-	redisClient, err := newRedis()
+	redisClient, err := redis.NewRedis(config.Env("REDIS_ADDR", config.DefaultRedisAddr))
 	if err != nil {
 		logger.Fatal(err)
 	}
@@ -34,18 +34,6 @@ func main() {
 
 	// Run server
 	startServer(logger)
-}
-
-// newRedis create a new connection to Redis client
-func newRedis() (*redis.Client, error) {
-	client := redis.NewClient(&redis.Options{
-		Addr: config.Env("REDIS_ADDR", config.DefaultRedisAddr),
-	})
-
-	// Check connection
-	_, err := client.Ping().Result()
-
-	return client, err
 }
 
 // startServer starts the server on http/https depending on the environment

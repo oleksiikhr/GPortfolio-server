@@ -5,12 +5,12 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/go-redis/redis/v7"
+	"github.com/GPortfolio/server/services/redis"
 )
 
 // Handlers
 type Handlers struct {
-	Redis  *redis.Client
+	Redis  *redis.Redis
 	Logger *log.Logger
 }
 
@@ -30,7 +30,7 @@ func push(w http.ResponseWriter, resources ...string) {
 }
 
 // response json by specific structure
-func response(w http.ResponseWriter, msg string, statusCode int) map[string]interface{} {
+func response(w http.ResponseWriter, msg interface{}, statusCode int) map[string]interface{} {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
 
@@ -41,8 +41,16 @@ func response(w http.ResponseWriter, msg string, statusCode int) map[string]inte
 	return response
 }
 
+// TODO
+func responseKeyPass(w http.ResponseWriter, key string, pass string) {
+	responseQuick(w, map[string]string{
+		"key": key,
+		"pass": pass,
+	}, http.StatusOK)
+}
+
 // responseQuick json by specific structure
-func responseQuick(w http.ResponseWriter, msg string, statusCode int) {
+func responseQuick(w http.ResponseWriter, msg interface{}, statusCode int) {
 	response := response(w, msg, statusCode)
 	json.NewEncoder(w).Encode(response)
 }

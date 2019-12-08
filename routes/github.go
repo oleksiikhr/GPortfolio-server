@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/GPortfolio/server/services/github"
 )
@@ -12,6 +12,9 @@ import (
 func (h *Handlers) githubRoutes() {
 	http.HandleFunc("/api/github/oauth/redirect", h.handleGithubRedirect())
 	http.HandleFunc("/api/github/oauth/accept", h.handleGithubAccept())
+	// TODO
+	// /api/github/profile
+	// /api/github/repositories
 }
 
 // handleGithubRedirect user to Github oauth page
@@ -51,9 +54,13 @@ func (h *Handlers) handleGithubAccept() http.HandlerFunc {
 			return
 		}
 
-		fmt.Println(oauthResponse.AccessToken)
+		keyPass, err := h.Redis.RndSet(oauthResponse.AccessToken, time.Hour*24)
+		if err != nil {
+			h.Logger.Println(err)
+			responseQuick(w, err.Error(), http.StatusBadRequest)
+			return
+		}
 
-		// oauthResp.AccessToken
-		w.Write([]byte("Token received, you can close the tab"))
+		responseKeyPass(w, keyPass.Key, keyPass.Pass)
 	}
 }
