@@ -3,7 +3,6 @@ package routes
 import (
 	"encoding/json"
 	"log"
-	"math/rand"
 	"net/http"
 
 	"github.com/go-redis/redis/v7"
@@ -19,40 +18,6 @@ type Handlers struct {
 func (h *Handlers) NewRoutes() {
 	h.globalRoutes()
 	h.githubRoutes()
-}
-
-func (h *Handlers) authMiddleware(next http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		headerSecurityPass := r.Header.Get("Security-Pass")
-		headerSecurityKey := r.Header.Get("Security-Key")
-
-		if headerSecurityKey != "" && headerSecurityPass != "" {
-			data := h.Redis.Get(headerSecurityKey)
-			h.Logger.Println(data)
-			// if exists
-			// 	set app.User = redis.data
-		}
-
-		w.Header().Set("Security-Key", rnd(40))
-		w.Header().Set("Security-Pass", rnd(60))
-
-		h.Logger.Println("HERE", r.URL)
-		next.ServeHTTP(w, r)
-	}
-}
-
-// TODO Move to other package
-// rnd generate a random of symbols specified length
-func rnd(n int) string {
-	letterRunes := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
-	letterRunesLen := len(letterRunes)
-	b := make([]rune, n)
-
-	for i := range b {
-		b[i] = letterRunes[rand.Intn(letterRunesLen)]
-	}
-
-	return string(b)
 }
 
 // push to speed up content delivery (http/2)
