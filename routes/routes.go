@@ -1,24 +1,57 @@
 package routes
 
 import (
-	"encoding/json"
 	"log"
+	"math/rand"
 	"net/http"
 
 	"github.com/go-redis/redis/v7"
 )
 
-// App this is the core of the application
-type App struct {
+// Handlers
+type Handlers struct {
 	Redis  *redis.Client
 	Logger *log.Logger
 	Html   []byte
 }
 
-// NewRoutes - register all exists routes
-func (app App) NewRoutes() {
-	app.globalRoutes()
-	app.githubRoutes()
+// NewRoutes register all exists routes
+func (h *Handlers) NewRoutes() {
+	h.globalRoutes()
+	h.githubRoutes()
+}
+
+func (h *Handlers) authMiddleware(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		headerSecurityPass := r.Header.Get("Security-Pass")
+		headerSecurityKey := r.Header.Get("Security-Key")
+
+		if headerSecurityKey != "" && headerSecurityPass != "" {
+			data := h.Redis.Get(headerSecurityKey)
+			h.Logger.Println(data)
+			// if exists
+			// 	set app.User = redis.data
+		}
+
+		w.Header().Set("Security-Key", rnd(25))
+		w.Header().Set("Security-Pass", rnd(60))
+
+		h.Logger.Println("HERE", r.URL)
+		next.ServeHTTP(w, r)
+	}
+}
+
+// TODO Move to other package
+// rnd generate a random of symbols specified length
+func rnd(n int) string {
+	letterRunes := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+	b := make([]rune, n)
+
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+
+	return string(b)
 }
 
 // push to speed up content delivery (http/2)
@@ -30,33 +63,14 @@ func push(w http.ResponseWriter, resources ...string) {
 	}
 }
 
-// TODO
+// response json by specific structure
 func response(w http.ResponseWriter, msg string, statusCode int) map[string]interface{} {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
 
 	response := make(map[string]interface{})
 	response["message"] = msg
+	response["data"] = nil
 
 	return response
-}
-
-// respJsonFailed set badRequest to response and output message of error
-func respJsonFailed(w http.ResponseWriter, msg string) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusBadRequest)
-
-	response := make(map[string]interface{})
-	response["message"] = msg
-	json.NewEncoder(w).Encode(response)
-}
-
-// respJsonSuccess with message
-func respJsonSuccess(w http.ResponseWriter, msg string) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-
-	response := make(map[string]interface{})
-	response["message"] = msg
-	json.NewEncoder(w).Encode(response)
 }

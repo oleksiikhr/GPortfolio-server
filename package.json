@@ -2,7 +2,7 @@
   "name": "@gportfolio/server",
   "version": "1.0.0",
   "description": "Create Your Portfolio Online",
-  "main": "src/main.js",
+  "main": "web/main.js",
   "scripts": {
     "dev": "webpack-dev-server --hot --progress",
     "build": "webpack --mode=production",

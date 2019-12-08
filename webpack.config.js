@@ -2,15 +2,15 @@
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const WebpackPwaManifest = require('webpack-pwa-manifest')
 const { VueLoaderPlugin } = require('vue-loader/lib/index')
+const WebpackPwaManifest = require('webpack-pwa-manifest')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { GenerateSW } = require('workbox-webpack-plugin')
 const path = require('path')
 const packageJson = require('./package')
 
 require('dotenv').config({
-  path: path.resolve(__dirname, '../.env')
+  path: path.resolve(__dirname, './.env')
 })
 
 module.exports = (env, argv) => {
@@ -20,15 +20,15 @@ module.exports = (env, argv) => {
     mode: isProd ? 'production' : 'development',
     entry: [
       'ant-design-vue/dist/antd.less',
-      './src/styles/index.scss',
-      './src/main.js'
+      './web/styles/index.scss',
+      './web/main.js'
     ],
     devtool: isProd ? false : 'source-map',
     output: {
       filename: 'static/[name].js',
       chunkFilename: 'static/chunks/[name].[hash].js',
       publicPath: '/',
-      path: path.resolve(__dirname, '../dist')
+      path: path.resolve(__dirname, './dist')
     },
     devServer: {
       publicPath: '/',
@@ -146,8 +146,8 @@ module.exports = (env, argv) => {
     resolve: {
       extensions: ['.js', '.vue', '.json'],
       alias: {
-        '@': path.resolve(__dirname, './src/'),
-        'scss': path.resolve(__dirname, './src/styles/')
+        '@': path.resolve(__dirname, './web/'),
+        'scss': path.resolve(__dirname, './web/styles/')
       }
     }
   }
