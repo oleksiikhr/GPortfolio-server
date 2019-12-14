@@ -2,7 +2,6 @@ package routes
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -54,23 +53,18 @@ func (h *Handlers) handleGithubAccept() http.HandlerFunc {
 			return
 		}
 
-		responseQuick(w, map[string]string{
-			"key": keyPass.Key,
-			"pass": keyPass.Pass,
-		}, http.StatusOK)
+		w.Write([]byte(keyPass.Key+"@"+keyPass.Pass))
 	}
 }
 
 // handleGithubProfile get profile for auth user
 func (h *Handlers) handleGithubProfile() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		value := h.tryAccessToken(r)
-		if value == nil {
+		token := h.tryAccessToken(r)
+		if token == "" {
 			responseQuick(w, "No access", http.StatusBadRequest)
 			return
 		}
-
-		token := fmt.Sprintf("%v", value)
 
 		profile, err := github.FetchProfile(token)
 		if err != nil {

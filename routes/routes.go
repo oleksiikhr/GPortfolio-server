@@ -2,6 +2,7 @@ package routes
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -21,15 +22,19 @@ func (h *Handlers) NewRoutes() {
 }
 
 // tryAccessToken from response headers
-func (h *Handlers) tryAccessToken(r *http.Request) interface{} {
+func (h *Handlers) tryAccessToken(r *http.Request) string {
 	pass := r.Header.Get("Security-Pass")
 	key := r.Header.Get("Security-Key")
-
 	if key == "" || pass == "" {
-		return nil
+		return ""
 	}
 
-	return h.Redis.SecGetHard(key, pass)
+	value := h.Redis.SecGetHard(key, pass)
+	if value == nil {
+		return ""
+	}
+
+	return fmt.Sprintf("%v", value)
 }
 
 // response json by specific structure
