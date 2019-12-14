@@ -9,9 +9,10 @@ const { GenerateSW } = require('workbox-webpack-plugin')
 const path = require('path')
 const packageJson = require('./package')
 
-require('dotenv').config({
-  path: path.resolve(__dirname, './.env')
-})
+const envFile = path.resolve(__dirname, './.env')
+if (envFile) {
+  require('dotenv').config({ path: envFile })
+}
 
 module.exports = (env, argv) => {
   const isProd = argv && argv.mode === 'production'
@@ -32,7 +33,7 @@ module.exports = (env, argv) => {
     },
     devServer: {
       publicPath: '/',
-      contentBase: './dist',
+      contentBase: '../dist',
       host: process.env.WEBPACK_DEV_HOST || 'localhost',
       port: +process.env.WEBPACK_DEV_PORT || 3000,
       hot: true,
@@ -163,7 +164,7 @@ module.exports = (env, argv) => {
           {
             destination: 'static/icons',
             sizes: [96, 128, 192, 256, 384, 512],
-            src: require('./web/images/icon.png')
+            src: path.resolve(__dirname, './web/images/icon.png')
           }
         ],
         name: 'GPortfolio',
