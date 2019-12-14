@@ -33,11 +33,12 @@ module.exports = (env, argv) => {
     },
     devServer: {
       publicPath: '/',
-      contentBase: '../dist',
+      contentBase: './dist',
       host: process.env.WEBPACK_DEV_HOST || 'localhost',
       port: +process.env.WEBPACK_DEV_PORT || 3000,
       hot: true,
       clientLogLevel: 'error',
+      writeToDisk: true,
       proxy: {
         '/api/*': {
           target: (process.env.APP_TLS === 'true' ? 'https://' : 'http://') + (process.env.APP_ADDR || 'localhost:8080'),
