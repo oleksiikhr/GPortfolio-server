@@ -8,20 +8,20 @@ import (
 	"github.com/go-redis/redis/v7"
 )
 
-// TODO
+// Redis client
 type Redis struct {
 	Client *redis.Client
 }
 
-// TODO
+// Structure stores in Redis
 type Structure struct {
 	Value interface{}
 	Pass  string
 }
 
-// TODO
+// KeyPass
 type KeyPass struct {
-	Key string
+	Key  string
 	Pass string
 }
 
@@ -37,8 +37,9 @@ func NewRedis(addr string) (*Redis, error) {
 	return &Redis{Client: client}, err
 }
 
-// TODO
-func (r *Redis) RndSet(value interface{}, t time.Duration) (*KeyPass, error) {
+// SecSet generate random key and value and store value
+// to Redis
+func (r *Redis) SecSet(value interface{}, t time.Duration) (*KeyPass, error) {
 	keyPass := generateKeyPass()
 	encoding, err := json.Marshal(Structure{
 		Value: value,
@@ -49,7 +50,7 @@ func (r *Redis) RndSet(value interface{}, t time.Duration) (*KeyPass, error) {
 		return keyPass, err
 	}
 
-	err = r.Client.Set(keyPass.Key, encoding, t).Err()
+	err = r.Client.Set("sec:"+keyPass.Key, encoding, t).Err()
 	if err != nil {
 		return keyPass, err
 	}
@@ -57,10 +58,33 @@ func (r *Redis) RndSet(value interface{}, t time.Duration) (*KeyPass, error) {
 	return keyPass, nil
 }
 
-// TODO
+// SecGetHard try get data by key and password
+// if key equals but password not - destroy data
+func (r *Redis) SecGetHard(key, password string) interface{} {
+	value, err := r.Client.Get("sec:" + key).Bytes()
+	if err != nil {
+		return nil
+	}
+
+	var structure *Structure
+	err = json.Unmarshal(value, &structure)
+	if err != nil {
+		return nil
+	}
+
+	// Destroy data if the attempt is unsuccessful
+	if structure.Pass != password {
+		r.Client.Del("sec:" + key)
+		return nil
+	}
+
+	return structure.Value
+}
+
+// generateKeyPass for store value in database*
 func generateKeyPass() *KeyPass {
 	return &KeyPass{
-		Key: helpers.Rnd(40),
-		Pass: helpers.Rnd(60),
+		Key:  helpers.Rnd(70),
+		Pass: helpers.Rnd(30),
 	}
 }

@@ -20,6 +20,18 @@ func (h *Handlers) NewRoutes() {
 	h.githubRoutes()
 }
 
+// tryAccessToken from response headers
+func (h *Handlers) tryAccessToken(r *http.Request) interface{} {
+	pass := r.Header.Get("Security-Pass")
+	key := r.Header.Get("Security-Key")
+
+	if key == "" || pass == "" {
+		return nil
+	}
+
+	return h.Redis.SecGetHard(key, pass)
+}
+
 // push to speed up content delivery (http/2)
 func push(w http.ResponseWriter, resources ...string) {
 	if pusher, ok := w.(http.Pusher); ok {
@@ -39,14 +51,6 @@ func response(w http.ResponseWriter, msg interface{}, statusCode int) map[string
 	response["data"] = nil
 
 	return response
-}
-
-// TODO
-func responseKeyPass(w http.ResponseWriter, key string, pass string) {
-	responseQuick(w, map[string]string{
-		"key": key,
-		"pass": pass,
-	}, http.StatusOK)
 }
 
 // responseQuick json by specific structure
