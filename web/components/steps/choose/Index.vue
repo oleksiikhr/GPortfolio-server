@@ -3,10 +3,10 @@
 </template>
 
 <script>
-import TemplatesBlock from '@/components/steps/choose/blocks/Templates'
-import StorageBlock from '@/components/steps/choose/blocks/Storage'
 import GithubApiBlock from '@/components/steps/choose/api/Github'
-import ApiBlock from '@/components/steps/choose/blocks/Api'
+import TemplatesBlock from '@/components/steps/choose/Templates'
+import StorageBlock from '@/components/steps/choose/Storage'
+import ApiBlock from '@/components/steps/choose/Api'
 import AutoStep from '@/components/steps/AutoStep'
 
 export default {
