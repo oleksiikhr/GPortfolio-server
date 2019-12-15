@@ -16,17 +16,17 @@
     </a>
     <a-popover placement="bottom">
       <template slot="content">
-        <span>Become a Contributor</span>
+        <span>All Contributors</span>
       </template>
+      <!--TODO Create page with list of all contributors-->
       <a
         :href="ORGANIZATION"
         rel="noreferrer"
         target="_blank"
       >
         <a-avatar
-          type="primary"
-          icon="plus"
-          alt="Become a contributor"
+          icon="user"
+          alt="All Contributors"
         />
       </a>
     </a-popover>

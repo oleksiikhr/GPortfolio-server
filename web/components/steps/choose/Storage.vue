@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <a-alert
-      message="You can restore the latest data by simply selecting one of the items"
-      type="info"
-      show-icon
-    />
-  </div>
+  <a-alert
+    message="You can import all early data and settings"
+    type="info"
+    show-icon
+  />
 </template>
 
 <script>

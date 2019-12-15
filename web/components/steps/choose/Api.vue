@@ -1,7 +1,7 @@
 <template>
   <a-alert
-    message="Quickly get all the basic data from the desired social network, as well as
-      additional (for example, repositories from Github)"
+    message="In order not to fill in the data manually, you can
+      import personal data from various social networks and other sites"
     type="info"
     show-icon
   />
