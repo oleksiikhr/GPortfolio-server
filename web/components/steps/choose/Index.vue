@@ -5,8 +5,8 @@
 <script>
 import GithubApiBlock from '@/components/steps/choose/api/Github'
 import TemplatesBlock from '@/components/steps/choose/Templates'
+import WebsitesBlock from '@/components/steps/choose/Websites'
 import StorageBlock from '@/components/steps/choose/Storage'
-import ApiBlock from '@/components/steps/choose/Api'
 import AutoStep from '@/components/steps/AutoStep'
 
 export default {
@@ -22,13 +22,13 @@ export default {
           title: 'Storage'
         },
         {
-          component: ApiBlock,
-          href: '#api',
-          title: 'API',
+          component: WebsitesBlock,
+          href: '#websites',
+          title: 'Websites',
           children: [
             {
               component: GithubApiBlock,
-              href: '#api-github',
+              href: '#website-github',
               title: 'Github'
             }
           ]

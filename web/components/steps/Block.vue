@@ -6,7 +6,7 @@
         :href="link"
         class="cb_link"
       >
-        # {{ title }}
+        {{ text }}
       </a>
     </div>
     <div class="cb_content">
@@ -43,6 +43,9 @@ export default {
     },
     link() {
       return '#' + this.id
+    },
+    text() {
+      return (this.level === 1 ? '# ' : '') + this.title
     }
   }
 }

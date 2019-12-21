@@ -9,6 +9,28 @@
 import { REGEX_PASS } from '@/data/auth'
 import { popup } from '@/scripts/window'
 
+/*
+parse: {
+  repositories: {
+    type: 'owner',
+    sort: 'updated',
+    direction: 'desc',
+    visibility: 'public',
+    affiliation: 'owner,collaborator,organization_member'
+  }
+},
+filter: {
+  repositories: []
+},
+sort: {
+  repositories: {
+    attr: 'stargazers_count',
+    enable: true,
+    sortByDesc: true
+  }
+},
+ */
+
 export default {
   methods: {
     onClick() {
@@ -21,7 +43,7 @@ export default {
         console.log('code', response)
         if (REGEX_PASS.test(response)) {
           const [login, password] = response.split('@')
-          localStorage.setItem('api-github', JSON.stringify({ login, password }))
+          localStorage.setItem('github-website', JSON.stringify({ login, password }))
           console.log('Success!')
           // TODO Success, store to localStorage
         } else {

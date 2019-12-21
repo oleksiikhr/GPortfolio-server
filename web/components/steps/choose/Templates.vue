@@ -1,22 +1,17 @@
 <template>
   <div>
-    <a-alert
-      message="Choose the template you want to use"
-      type="info"
-      class="mb-20"
-      show-icon
-    />
+    <p>Choose the template you want to use.</p>
     <div
-      :class="['block_templates', {
-        has_active: template
+      :class="['block_templates', 'mt-20', {
+        has_active: activeTemplate
       }]"
     >
       <template-item
-        v-for="(t, index) in templates"
+        v-for="(template, index) in templates"
         :key="index"
-        :template="t"
-        :class="{ active: t.name === template }"
-        @click.native="onClick(t)"
+        :template="template"
+        :class="{ active: template.name === activeTemplate }"
+        @click.native="onClick(template)"
       />
     </div>
   </div>
@@ -36,17 +31,15 @@ export default {
     }
   },
   computed: {
-    template() {
+    activeTemplate() {
       return this.$store.state.global.template
     }
   },
   methods: {
     onClick(template) {
-      // Select and deselect
-      this.$store.commit('global/UPDATE', {
-        key: 'template',
-        value: template.name === this.template ? '' : template.name
-      })
+      const chooseTemplate = this.activeTemplate === template.name ? '' : template.name
+      console.log('chooseTemplate', chooseTemplate)
+      this.$store.commit('global/SET_TEMPLATE', chooseTemplate)
     }
   }
 }
