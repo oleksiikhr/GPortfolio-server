@@ -1,16 +1,16 @@
 'use strict'
 
 const state = {
-  template: '',
-  base: '',
-  opg: {},
-  pwa: {},
-  domain: ''
+  profile: {},
+  repositories: []
 }
 
 const mutations = {
-  SET_TEMPLATE(state, str) {
-    state.template = str
+  SET_PROFILE(state, obj) {
+    state.profile = obj
+  },
+  SET_REPOSITORIES(state, arr) {
+    state.repositories = arr
   }
 }
 

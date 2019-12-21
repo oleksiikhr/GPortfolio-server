@@ -1,17 +1,13 @@
 'use strict'
 
 const state = {
-  template: '',
-  base: '',
-  opg: {},
-  pwa: {},
-  domain: ''
+  background: '',
+  github_repositories_more: 15,
+  dribbble_shots_more: 15
 }
 
 const mutations = {
-  SET_TEMPLATE(state, str) {
-    state.template = str
-  }
+  //
 }
 
 const actions = {

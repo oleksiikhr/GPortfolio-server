@@ -1,17 +1,16 @@
 'use strict'
 
 const state = {
-  template: '',
-  base: '',
-  opg: {},
-  pwa: {},
-  domain: ''
+  name: '',
+  avatar_url: '',
+  position: '',
+  hire: false,
+  socialMedia: [],
+  // TODO
 }
 
 const mutations = {
-  SET_TEMPLATE(state, str) {
-    state.template = str
-  }
+  //
 }
 
 const actions = {
