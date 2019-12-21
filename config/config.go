@@ -5,8 +5,6 @@ import "os"
 const (
 	// ProjectName from Github repository
 	ProjectName = "GPortfolio"
-	// HomePageFile path dist from web
-	HomePageFile = "./dist/index.html"
 	// DefaultRedisAddr connect to the redis by this address if not present
 	DefaultRedisAddr = "localhost:6379"
 	// DefaultAppAddr run application by this address if not present
