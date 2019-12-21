@@ -34,11 +34,22 @@ export function getDeepByKey(data, keys, deep = 0) {
  * @param {*} val
  * @return {boolean}
  */
-function isObject(val) {
-  return (!!val) && (val.constructor === Object)
+export function isObject(val) {
+  return !!val && val.constructor === Object
+}
+
+/**
+ * Convert data to an object (if they are not)
+ *
+ * @param {any} data
+ * @returns {array}
+ */
+export function wrap(data) {
+  return isObject(data) ? data : [data]
 }
 
 export default {
   getDeepByKey,
-  isObject
+  isObject,
+  wrap
 }

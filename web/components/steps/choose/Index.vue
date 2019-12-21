@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import GithubApiBlock from '@/components/steps/choose/api/Github'
+import GithubWebsiteBlock from '@/components/steps/choose/websites/Github'
 import TemplatesBlock from '@/components/steps/choose/Templates'
 import WebsitesBlock from '@/components/steps/choose/Websites'
 import StorageBlock from '@/components/steps/choose/Storage'
@@ -27,7 +27,7 @@ export default {
           title: 'Websites',
           children: [
             {
-              component: GithubApiBlock,
+              component: GithubWebsiteBlock,
               href: '#website-github',
               title: 'Github'
             }

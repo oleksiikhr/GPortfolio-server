@@ -14,6 +14,17 @@ export function shuffle(arr) {
   return arr
 }
 
+/**
+ * Convert data to an array (if they are not)
+ *
+ * @param {any} data
+ * @returns {array}
+ */
+export function wrap(data) {
+  return Array.isArray(data) ? data : [data]
+}
+
 export default {
-  shuffle
+  shuffle,
+  wrap
 }
