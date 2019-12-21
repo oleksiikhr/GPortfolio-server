@@ -1,15 +1,13 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
 	"log"
-	"math/rand"
 	"net/http"
+	"os"
 
 	"github.com/GPortfolio/server/config"
 	"github.com/GPortfolio/server/routes"
-	"github.com/go-redis/redis/v7"
+	"github.com/GPortfolio/server/services/redis"
 	"github.com/joho/godotenv"
 )
 
@@ -17,49 +15,33 @@ func main() {
 	// Load .env file
 	_ = godotenv.Load()
 
-	// Connect to Redis
-	rClient, err := cRedis()
-	if err != nil {
-		log.Fatal(err)
-	}
+	// Create a new logger
+	logger := log.New(os.Stdout, config.ProjectName+" ", log.LstdFlags|log.Lshortfile)
 
-	// Load html file
-	html, err := loadHomePageHtml()
+	// Connect to Redis
+	redisClient, err := redis.NewRedis(config.Env("REDIS_ADDR", config.DefaultRedisAddr))
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 
 	// Run application with routes
-	app := routes.App{Redis: rClient, Html: html}
-	app.GlobalRoutes()
-	app.GithubRoutes()
+	h := routes.Handlers{
+		Redis:  redisClient,
+		Logger: logger,
+	}
+
+	h.NewRoutes()
 
 	// Run server
-	startServer()
-}
-
-// newRedis create a new connection to Redis client
-func cRedis() (*redis.Client, error) {
-	client := redis.NewClient(&redis.Options{
-		Addr: config.Env("REDIS_ADDR", "localhost:6379"),
-	})
-
-	// Check connection
-	_, err := client.Ping().Result()
-
-	return client, err
-}
-
-// loadHomePageHtml it's index.html from dist folder (frontend/web after build)
-func loadHomePageHtml() ([]byte, error) {
-	return ioutil.ReadFile("./dist/index.html")
+	startServer(logger)
 }
 
 // startServer starts the server on http/https depending on the environment
-func startServer() {
-	addr := config.Env("APP_ADDR", "localhost:8080")
-	fmt.Println("Server Run:", addr)
+func startServer(logger *log.Logger) {
 	var err error
+
+	addr := config.Env("APP_ADDR", config.DefaultAppAddr)
+	logger.Println("Server Running (" + addr + ")")
 
 	if config.Env("APP_TLS", "false") == "true" {
 		err = http.ListenAndServeTLS(addr, config.Env("APP_TLS_CERT", ""), config.Env("APP_TLS_KEY", ""), nil)
@@ -68,22 +50,8 @@ func startServer() {
 	}
 
 	if err == nil {
-		fmt.Println("Server stopped")
+		logger.Println("Server Stopped")
 	} else {
-		fmt.Println(err)
+		logger.Println(err)
 	}
-}
-
-// rnd generate a random of symbols specified length
-// https://stackoverflow.com/a/31832326/9612245
-// TODO Is needed?
-func rnd(n int) string {
-	letterRunes := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
-	b := make([]rune, n)
-
-	for i := range b {
-		b[i] = letterRunes[rand.Intn(len(letterRunes))]
-	}
-
-	return string(b)
 }

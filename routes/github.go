@@ -1,89 +1,80 @@
 package routes
 
 import (
-	"bytes"
 	"encoding/json"
-	"github.com/go-redis/redis/v7"
 	"net/http"
-	"net/url"
+	"strings"
+	"time"
 
-	"github.com/GPortfolio/server/config"
+	"github.com/GPortfolio/server/services/github"
 )
 
-// App this is the core
-type App struct {
-	Redis *redis.Client
-	Html  []byte
+// githubRoutes register routes for Github
+func (h *Handlers) githubRoutes() {
+	http.HandleFunc("/api/github/oauth/redirect", h.handleGithubRedirect())
+	http.HandleFunc("/api/github/oauth/accept", h.handleGithubAccept())
+	http.HandleFunc("/api/github/profile", h.handleGithubProfile())
+	// /api/github/repositories
 }
 
-// githubDomain for main website
-const githubDomain = "https://github.com"
-
-// githubOauthResponse after get user access token
-type githubOauthResponse struct {
-	AccessToken      string `json:"access_token"`
-	Scope            string `json:"scope"`
-	TokenType        string `json:"token_type"`
-	Error            string `json:"error"`
-	ErrorDescription string `json:"error_description"`
-	ErrorUri         string `json:"error_uri"`
-}
-
-// GithubRoutes register routes for Github
-func (app App) GithubRoutes() {
-	http.HandleFunc("/github/oauth/redirect", app.handleGithubRedirect)
-	http.HandleFunc("/github/oauth/accept", app.handleGithubAccept)
-}
-
-// handleRedirect user to Github oauth page
-func (App) handleGithubRedirect(w http.ResponseWriter, r *http.Request) {
-	http.Redirect(w, r, githubDomain+"/login/oauth/authorize"+
-		"?client_id="+config.Env("GITHUB_APP_ID", "")+
-		"&redirect_uri="+url.QueryEscape(config.GetUrlWebsite()+"/github/oauth/accept")+
-		"&state="+r.Header.Get("APP_TOKEN"), http.StatusMovedPermanently)
+// handleGithubRedirect user to Github oauth page
+func (h *Handlers) handleGithubRedirect() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, github.GetOauthRedirectUrl(), http.StatusMovedPermanently)
+	}
 }
 
 // handleGithubAccept user redirected after oauth page on Github website
-func (App) handleGithubAccept(w http.ResponseWriter, r *http.Request) {
-	requestBody, _ := json.Marshal(map[string]string{
-		"client_id":     config.Env("GITHUB_APP_ID", ""),
-		"client_secret": config.Env("GITHUB_APP_SECRET", ""),
-		"code":          r.URL.Query().Get("code"),
-	})
+func (h *Handlers) handleGithubAccept() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		code := strings.TrimSpace(r.URL.Query().Get("code"))
+		if code == "" {
+			responseQuick(w, "Code is empty", http.StatusBadRequest)
+			return
+		}
 
-	// TODO Validation + state
+		requestBody, err := github.GenerateOauthBody(code)
+		if err != nil {
+			h.Logger.Println(err)
+			responseQuick(w, "Something went wrong", http.StatusBadRequest)
+			return
+		}
 
-	// Send request to get access token from received code
-	req, err := http.NewRequest(http.MethodPost, githubDomain+"/login/oauth/access_token", bytes.NewBuffer(requestBody))
-	if err != nil {
-		respJsonFailed(w, err.Error())
-		return
+		oauthResponse, err := github.FetchAccessToken(requestBody)
+		if err != nil {
+			responseQuick(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		keyPass, err := h.Redis.SecSet(oauthResponse.AccessToken, time.Hour*24)
+		if err != nil {
+			h.Logger.Println(err)
+			responseQuick(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		w.Write([]byte(keyPass.Key+"@"+keyPass.Pass))
 	}
+}
 
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		respJsonFailed(w, err.Error())
-		return
+// handleGithubProfile get profile for auth user
+func (h *Handlers) handleGithubProfile() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		token := h.tryAccessToken(r)
+		if token == "" {
+			responseQuick(w, "No access", http.StatusBadRequest)
+			return
+		}
+
+		profile, err := github.FetchProfile(token)
+		if err != nil {
+			responseQuick(w, "Profile not found", http.StatusBadRequest)
+			return
+		}
+
+		response := response(w, "Profile received", http.StatusOK)
+		response["data"] = profile
+
+		json.NewEncoder(w).Encode(response)
 	}
-
-	defer resp.Body.Close()
-
-	var oauthResp githubOauthResponse
-	err = json.NewDecoder(resp.Body).Decode(&oauthResp)
-	if err != nil {
-		respJsonFailed(w, err.Error())
-		return
-	}
-
-	if oauthResp.Error != "" {
-		respJsonFailed(w, oauthResp.ErrorDescription)
-		return
-	}
-
-	// TODO Store on Redis to the current user
-	// oauthResp.AccessToken
-	w.Write([]byte("Token received, you can close the tab"))
 }
